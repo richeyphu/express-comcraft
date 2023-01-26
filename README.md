@@ -1,2 +1,3 @@
 # express-final-project
-The Final Project of Build RESTful API with MongoDb, Node.js and Express Course
+
+The final project of `Build RESTful API with MongoDB, Node.js and Express` course.
