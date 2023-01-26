@@ -1,8 +1,6 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 
 const router = express.Router();
-
-import { Request, Response, NextFunction } from "express";
 
 /* GET users listing. */
 router.get("/", function (req: Request, res: Response, next: NextFunction) {
