@@ -7,14 +7,13 @@
 const app = require("../app");
 const debug = require("debug")("express-final-project:server");
 const http = require("http");
-// const config = require("../config");
+require("dotenv").config();
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort("3000");
-// const port = normalizePort(config.PORT || "3000");
+const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
 /**
