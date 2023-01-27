@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 import bcrypt from 'bcrypt';
 
 interface UserDocument extends Document {
   password: string;
 }
+
+const Schema = mongoose.Schema;
 
 const schema = new Schema<UserDocument>(
   {
