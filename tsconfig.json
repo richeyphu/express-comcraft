@@ -65,8 +65,28 @@
     /* Advanced Options */
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+    // custom paths
     "paths": {
-      "@src/*": ["src/*"]
+      "@public/*": ["public/*"],
+      "@src/*": ["src/*"],
+      // config
+      "@config": ["src/config/index.ts"],
+      "@config/*": ["src/config/*"],
+      // controllers
+      "@controllers": ["src/controllers/index.ts"],
+      "@controllers/*": ["src/controllers/*"],
+      // middleware
+      "@middleware": ["src/middleware/index.ts"],
+      "@middleware/*": ["src/middleware/*"],
+      // models
+      "@models": ["src/models/index.ts"],
+      "@models/*": ["src/models/*"],
+      // routes
+      "@routes": ["src/routes/index.ts"],
+      "@routes/*": ["src/routes/*"],
+      // utils
+      "@utils": ["src/utils/index.ts"],
+      "@utils/*": ["src/utils/*"]
     },
     "useUnknownInCatchVariables": false
   },

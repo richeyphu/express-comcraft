@@ -4,11 +4,11 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 
-import indexRouter from './routes/index';
-import usersRouter from './routes/users';
+import indexRouter from '@routes/index';
+import usersRouter from '@routes/users';
 
-import config from './config';
-import errorHandler from "./middleware/errorHandler";
+import config from '@config';
+import errorHandler from '@middleware/errorHandler';
 
 const app: Express = express();
 
