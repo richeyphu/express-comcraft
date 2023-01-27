@@ -1,12 +1,13 @@
 {
   "name": "express-final-project",
   "version": "0.0.0",
+  "description": "RESTful API for computer store",
   "author": "phuritd",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/bin/www",
-    "dev": "ts-node-dev -r tsconfig-paths/register --rs ./src/bin/www"
+    "dev": "tsnd -r tsconfig-paths/register --rs ./src/bin/www"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
