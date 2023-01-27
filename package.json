@@ -16,7 +16,7 @@
     "express": "~4.16.1",
     "express-validator": "^6.14.3",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.0",
+    "mongoose": "^5.13.15",
     "morgan": "~1.9.1",
     "uuid": "^9.0.0"
   },
