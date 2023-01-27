@@ -1,10 +1,10 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Router } from 'express';
 
-const router = express.Router();
+import * as usersController from '@controllers/usersController';
+
+const router: Router = express.Router();
 
 /* GET users listing. */
-router.get("/", function (req: Request, res: Response, next: NextFunction) {
-  res.send("respond with a resource");
-});
+router.get('/', usersController.index);
 
 export default router;
