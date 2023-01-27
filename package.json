@@ -2,6 +2,7 @@
   "name": "express-final-project",
   "version": "0.0.0",
   "author": "phuritd",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "ts-node ./src/bin/www",
