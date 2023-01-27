@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register ./src/bin/www",
-    "dev": "tsnd -r tsconfig-paths/register --rs ./src/bin/www"
+    "dev": "tsnd -r tsconfig-paths/register --rs ./src/bin/www",
+    "lint": "eslint --ext .ts ./src"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -30,6 +31,10 @@
     "@types/morgan": "~1.9.4",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.32.0",
+    "eslint-plugin-node": "^11.1.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.1.2",
