@@ -20,6 +20,7 @@ specifiers:
   morgan: ~1.9.1
   ts-node: ^10.9.1
   ts-node-dev: ^2.0.0
+  tsconfig-paths: ^4.1.2
   typescript: ^4.9.4
   uuid: ^9.0.0
 
@@ -46,6 +47,7 @@ devDependencies:
   '@types/uuid': 9.0.0
   ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
   ts-node-dev: 2.0.0_awa2wsr5thmg3i7jqycphctjfq
+  tsconfig-paths: 4.1.2
   typescript: 4.9.4
 
 packages:
@@ -763,6 +765,12 @@ packages:
     resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
     dev: false
 
+  /json5/2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
+    dev: true
+
   /jsonwebtoken/9.0.0:
     resolution: {integrity: sha512-tuGfYXxkQGDPnLJ7SibiQgVgeDgfbPq2k2ICcbgqW8WxWLBAxKQM/ZCu/IT8SOSwmaYl4dpTFCW5xZv7YbbWUw==}
     engines: {node: '>=12', npm: '>=6'}
@@ -1428,6 +1436,15 @@ packages:
       typescript: 4.9.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: true
+
+  /tsconfig-paths/4.1.2:
+    resolution: {integrity: sha512-uhxiMgnXQp1IR622dUXI+9Ehnws7i/y6xvpZB9IbUVOPy0muvdvgXeZOn88UcGPiT98Vp3rJPTa8bFoalZ3Qhw==}
+    engines: {node: '>=6'}
+    dependencies:
+      json5: 2.2.3
+      minimist: 1.2.7
+      strip-bom: 3.0.0
     dev: true
 
   /tsconfig/7.0.0:
