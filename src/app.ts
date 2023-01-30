@@ -8,7 +8,7 @@ import indexRouter from '@routes/index';
 import usersRouter from '@routes/users';
 
 import config from '@config';
-import errorHandler from '@middleware/errorHandler';
+import { errorHandler } from '@middleware';
 
 const app: Express = express();
 
