@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
-import jwt from 'jsonwebtoken';
+import { validationResult, Result, ValidationError } from 'express-validator';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import config from '@config';
 import { User, IUser } from '@models';
@@ -21,7 +21,7 @@ const register = async (
     const { name, email, password } = req.body as IUser;
 
     // validation
-    const errors = validationResult(req);
+    const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
       const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
       error.statusCode = 422;
@@ -29,7 +29,7 @@ const register = async (
       throw error;
     }
 
-    const existEmail = await User.findOne({ email: email });
+    const existEmail: IUser | null = await User.findOne({ email: email });
     if (existEmail) {
       const error: IError = new Error('อีเมลนี้มีผู้ใช้งานในระบบแล้ว');
       error.statusCode = 400;
@@ -51,4 +51,60 @@ const register = async (
   }
 };
 
-export { index, register };
+const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email, password } = req.body as IUser;
+
+    // validation
+    const errors: Result<ValidationError> = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
+
+    // check email isExist
+    const user: IUser | null = await User.findOne({ email: email });
+    if (!user) {
+      const error: IError = new Error('ไม่พบผู้ใช้งาน');
+      error.statusCode = 404;
+      throw error;
+    }
+
+    const isValid = user.checkPassword(password);
+    if (!isValid) {
+      const error: IError = new Error('รหัสผ่านไม่ถูกต้อง');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    // token
+    const token: string = jwt.sign(
+      {
+        id: user._id as string,
+        role: user.role,
+      },
+      config.JWT_SECRET,
+      {
+        expiresIn: '5 days',
+      }
+    );
+
+    const expires_in = jwt.decode(token) as JwtPayload;
+
+    res.status(200).json({
+      access_token: token,
+      expires_in: expires_in.exp,
+      token_type: 'Bearer',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { index, register, login };
