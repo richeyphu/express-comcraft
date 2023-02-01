@@ -1,11 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-export interface IUser {
+export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
   role?: string;
+  encryptPassword: (password: string) => string;
+  checkPassword: (password: string) => boolean;
 }
 
 const schema = new Schema<IUser>(
@@ -39,13 +41,13 @@ const schema = new Schema<IUser>(
   }
 );
 
-schema.methods.encryptPassword = (password: string) => {
+schema.methods.encryptPassword = (password: string): string => {
   const salt = bcrypt.genSaltSync(8);
   const hashPassword = bcrypt.hashSync(password, salt);
   return hashPassword;
 };
 
-schema.methods.checkPassword = function (password: string) {
+schema.methods.checkPassword = function (password: string): boolean {
   const isValid = bcrypt.compareSync(password, this.password);
   return isValid;
 };
