@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 import indexRouter from '@routes/index';
 import usersRouter from '@routes/user';
+import productRouter from '@routes/product';
 
 import config from '@config';
 import { errorHandler } from '@middleware';
@@ -24,7 +25,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
+app.use('/product', productRouter);
 
 app.use(errorHandler);
 
