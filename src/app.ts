@@ -5,7 +5,7 @@ import logger from 'morgan';
 import mongoose from 'mongoose';
 
 import indexRouter from '@routes/index';
-import usersRouter from '@routes/users';
+import usersRouter from '@routes/user';
 
 import config from '@config';
 import { errorHandler } from '@middleware';
