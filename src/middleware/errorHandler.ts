@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { ResultFactory, ValidationError } from 'express-validator';
+import { ValidationError } from 'express-validator';
 
-interface IError extends Error {
+export interface IError extends Error {
   statusCode?: number;
-  validation?: ResultFactory<ValidationError>;
+  validation?: ValidationError[];
 }
 
 const errorHandler = (
