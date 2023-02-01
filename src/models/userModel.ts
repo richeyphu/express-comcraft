@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
-interface UserDocument extends Document {
+export interface IUser {
+  name: string;
+  email: string;
   password: string;
+  role?: string;
 }
 
-const Schema = mongoose.Schema;
-
-const schema = new Schema<UserDocument>(
+const schema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -34,6 +35,7 @@ const schema = new Schema<UserDocument>(
   },
   {
     collection: 'users',
+    timestamps: true,
   }
 );
 
@@ -48,6 +50,6 @@ schema.methods.checkPassword = function (password: string) {
   return isValid;
 };
 
-const User = mongoose.model('User', schema);
+const User = model<IUser>('User', schema);
 
 export default User;
