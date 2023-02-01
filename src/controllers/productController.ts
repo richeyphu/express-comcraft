@@ -3,7 +3,7 @@ import { validationResult } from 'express-validator';
 
 import config from '@config';
 import { Product, IProduct } from '@models';
-import { errorHandler } from '@middleware';
+import { IError } from '@middleware';
 
 const index = async (
   req: Request,
