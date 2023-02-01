@@ -3,12 +3,12 @@ import { body } from 'express-validator';
 
 import { userController } from '@controllers';
 
-const router: Router = express.Router();
+const userRouter: Router = express.Router();
 
 /* GET users listing. */
-router.get('/', userController.index);
+userRouter.get('/', userController.index);
 
-router.post(
+userRouter.post(
   '/register',
   [
     body('name').not().isEmpty().withMessage('กรุณาป้อนชื่อ-สกุลด้วย'),
@@ -27,7 +27,7 @@ router.post(
   ],
   userController.register
 );
-router.post(
+userRouter.post(
   '/login',
   [
     body('email')
@@ -46,4 +46,4 @@ router.post(
   userController.login
 );
 
-export default router;
+export default userRouter;
