@@ -1,0 +1,51 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import passport from 'passport';
+import {
+  Strategy as JwtStrategy,
+  ExtractJwt,
+  StrategyOptions,
+  VerifiedCallback,
+} from 'passport-jwt';
+import { JwtPayload } from 'jsonwebtoken';
+
+import config from '@config';
+import { User, IUser } from '@models';
+
+interface IJwtPayload extends JwtPayload {
+  id: string;
+}
+
+const opts: StrategyOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: config.JWT_SECRET,
+  // issuer: "accounts.examplesoft.com";
+  // audience: "yoursite.net";
+};
+
+passport.use(
+  new JwtStrategy(
+    opts,
+    async (jwt_payload: IJwtPayload, done: VerifiedCallback) => {
+      try {
+        const user: IUser | null = await User.findById(jwt_payload.id);
+
+        if (!user) {
+          return done(new Error('ไม่พบผู้ใช้งาน'), false);
+        }
+
+        return done(null, user);
+      } catch (error: unknown) {
+        done(error);
+      }
+    }
+  )
+);
+
+const isLogin = passport.authenticate('jwt', { session: false });
+
+export default isLogin;
