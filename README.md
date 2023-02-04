@@ -15,3 +15,17 @@ $ pnpm i
 ```sh
 $ pnpm dev
 ```
+
+### Config environment variables (`.env`)
+
+Example:
+
+```env
+PORT=3000
+MONGODB_URI=Your_MongoDB_URI
+DOMAIN=http://localhost:3000
+JWT_SECRET=Your_JWT_Secret
+```
+
+## License
+Licensed under the [MIT License](LICENSE).
