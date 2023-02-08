@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
-import { env } from '@config';
+import { env, HttpStatusCode } from '@config';
 import { Product, IProduct } from '@models';
 import { IError } from '@middleware';
 import { isCorrectOid } from '@utils';
@@ -15,7 +15,7 @@ const index = async (
     const products: IProduct[] = await Product.find()
       .select('name price description category brand photo')
       .sort({ _id: -1 });
-    res.status(200).json({
+    res.status(HttpStatusCode.OK).json({
       data: products,
     });
   } catch (error) {
@@ -36,7 +36,7 @@ const insert = async (
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
-      error.statusCode = 422;
+      error.statusCode = HttpStatusCode.UNPROCESSABLE_ENTITY;
       error.validation = errors.array();
       throw error;
     }
@@ -51,7 +51,7 @@ const insert = async (
     });
     await product.save();
 
-    res.status(201).json({
+    res.status(HttpStatusCode.CREATED).json({
       message: 'เพิ่มข้อมูลเรียบร้อยแล้ว',
     });
   } catch (error) {
@@ -69,7 +69,7 @@ const showById = async (
 
     if (!isCorrectOid(oid)) {
       const error: IError = new Error('ไม่พบข้อมูล');
-      error.statusCode = 404;
+      error.statusCode = HttpStatusCode.NOT_FOUND;
       throw error;
     }
 
@@ -77,11 +77,11 @@ const showById = async (
 
     if (!product) {
       const error: IError = new Error('ไม่พบข้อมูล');
-      error.statusCode = 404;
+      error.statusCode = HttpStatusCode.NOT_FOUND;
       throw error;
     }
 
-    res.status(200).json({
+    res.status(HttpStatusCode.OK).json({
       data: product,
     });
   } catch (error) {
@@ -101,11 +101,11 @@ const showByCategory = async (
 
     if (product.length === 0) {
       const error: IError = new Error('ไม่พบข้อมูล');
-      error.statusCode = 404;
+      error.statusCode = HttpStatusCode.NOT_FOUND;
       throw error;
     }
 
-    res.status(200).json({
+    res.status(HttpStatusCode.OK).json({
       data: product,
     });
   } catch (error) {

@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { ValidationError } from 'express-validator';
 
+import { HttpStatusCode } from '@config';
+
 export interface IError extends Error {
   statusCode?: number;
   validation?: ValidationError[];
@@ -12,7 +14,7 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  const statusCode = err.statusCode || 500;
+  const statusCode = err.statusCode || HttpStatusCode.INTERNAL_SERVER_ERROR;
 
   res.status(statusCode).json({
     status_code: statusCode,
