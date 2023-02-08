@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult, Result, ValidationError } from 'express-validator';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-import { env, HttpStatusCode } from '@config';
+import { env, StatusCode } from '@config';
 import { User, IUser } from '@models';
 import { IError } from '@middleware';
 
 const index = (req: Request, res: Response, next: NextFunction): void => {
-  res.status(HttpStatusCode.OK).json({
+  res.status(StatusCode.OK).json({
     fullname: 'Phurit Dechaboonsiripanit',
   });
 };
@@ -24,7 +24,7 @@ const register = async (
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
       const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
-      error.statusCode = HttpStatusCode.UNPROCESSABLE_ENTITY;
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
       error.validation = errors.array();
       throw error;
     }
@@ -32,7 +32,7 @@ const register = async (
     const existEmail: IUser | null = await User.findOne({ email: email });
     if (existEmail) {
       const error: IError = new Error('อีเมลนี้มีผู้ใช้งานในระบบแล้ว');
-      error.statusCode = HttpStatusCode.CONFLICT;
+      error.statusCode = StatusCode.CONFLICT;
       throw error;
     }
 
@@ -43,7 +43,7 @@ const register = async (
 
     await user.save();
 
-    res.status(HttpStatusCode.CREATED).json({
+    res.status(StatusCode.CREATED).json({
       message: 'เพิ่มข้อมูลเรียบร้อยแล้ว',
     });
   } catch (error) {
@@ -63,7 +63,7 @@ const login = async (
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
       const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
-      error.statusCode = HttpStatusCode.UNPROCESSABLE_ENTITY;
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
       error.validation = errors.array();
       throw error;
     }
@@ -72,14 +72,14 @@ const login = async (
     const user: IUser | null = await User.findOne({ email: email });
     if (!user) {
       const error: IError = new Error('ไม่พบผู้ใช้งาน');
-      error.statusCode = HttpStatusCode.NOT_FOUND;
+      error.statusCode = StatusCode.NOT_FOUND;
       throw error;
     }
 
     const isValid = user.checkPassword(password);
     if (!isValid) {
       const error: IError = new Error('รหัสผ่านไม่ถูกต้อง');
-      error.statusCode = HttpStatusCode.UNAUTHORIZED;
+      error.statusCode = StatusCode.UNAUTHORIZED;
       throw error;
     }
 

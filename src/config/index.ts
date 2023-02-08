@@ -1,2 +1,2 @@
 export { default as env } from './envVar';
-export { default as HttpStatusCode } from './HttpStatusCode';
+export { default as StatusCode } from './HttpStatusCode';
