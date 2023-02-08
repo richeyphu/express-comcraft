@@ -7,7 +7,7 @@ import {
 } from 'passport-jwt';
 import { JwtPayload } from 'jsonwebtoken';
 
-import config from '@config';
+import { env } from '@config';
 import { User, IUser } from '@models';
 
 interface IJwtPayload extends JwtPayload {
@@ -16,7 +16,7 @@ interface IJwtPayload extends JwtPayload {
 
 const opts: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: config.JWT_SECRET,
+  secretOrKey: env.JWT_SECRET,
   // issuer: "accounts.examplesoft.com";
   // audience: "yoursite.net";
 };
