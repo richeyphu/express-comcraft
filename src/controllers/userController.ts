@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult, Result, ValidationError } from 'express-validator';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-import config from '@config';
+import { env } from '@config';
 import { User, IUser } from '@models';
 import { IError } from '@middleware';
 
@@ -89,7 +89,7 @@ const login = async (
         id: user._id as string,
         role: user.role,
       },
-      config.JWT_SECRET,
+      env.JWT_SECRET,
       {
         expiresIn: '5 days',
       }

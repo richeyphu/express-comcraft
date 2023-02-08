@@ -8,12 +8,12 @@ import indexRouter from '@routes/index';
 import usersRouter from '@routes/user';
 import productRouter from '@routes/product';
 
-import config from '@config';
+import { env } from '@config';
 import { errorHandler } from '@middleware';
 
 const app: Express = express();
 
-mongoose.connect(config.MONGODB_URI!, {
+mongoose.connect(env.MONGODB_URI!, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

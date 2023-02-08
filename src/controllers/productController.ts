@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
-import config from '@config';
+import { env } from '@config';
 import { Product, IProduct } from '@models';
 import { IError } from '@middleware';
 import { isCorrectOid } from '@utils';
