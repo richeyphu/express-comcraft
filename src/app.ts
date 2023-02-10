@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import indexRouter from '@routes/index';
 import usersRouter from '@routes/user';
 import productRouter from '@routes/product';
+import adminRouter from '@routes/admin';
 
 import { env } from '@config';
 import { errorHandler } from '@middleware';
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/product', productRouter);
+app.use('/admin', adminRouter);
 
 app.use(errorHandler);
 
