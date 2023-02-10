@@ -1,10 +1,10 @@
-import express, { Router, Request, Response, NextFunction } from 'express';
+import express, { Router } from 'express';
+
+import { indexController } from '@controllers';
 
 const router: Router = express.Router();
 
 /* GET home page. */
-router.get('/', function (req: Request, res: Response, next: NextFunction) {
-  res.status(200).json({ message: 'Hello World!' });
-});
+router.get('/', indexController.index);
 
 export default router;
