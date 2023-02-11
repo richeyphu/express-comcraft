@@ -20,26 +20,25 @@ interface ServerInfo {
   uptime: number;
   uptime_human: string;
   requests: RequestStats;
-  env: string;
+  env: string | null;
 }
 
 interface NodeInfo {
   version: string;
-  memoryUsage: {
-    using: number;
-    unit: 'MiB';
-  };
+  memoryUsage: MemoryInfo;
   uptime: number;
 }
 
 interface SystemInfo {
   loadavg: number[];
-  freeMemory: {
-    using: number;
-    unit: 'MiB';
-  };
+  freeMemory: MemoryInfo;
   hostname: string;
   os: string;
+}
+
+interface MemoryInfo {
+  value: number;
+  unit: 'MiB';
 }
 
 interface ServerStatus {
@@ -131,12 +130,12 @@ const serverStatus = function (app: Express) {
       (new Date().getTime() - uptime_start.getTime()) / 1000
     );
     server.uptime_human = moment(uptime_start).fromNow();
-    server.env = process.env.NODE_ENV || 'unknown';
+    server.env = process.env.NODE_ENV || null;
 
     const node: NodeInfo = {
       version: process.version,
       memoryUsage: {
-        using: Math.round(process.memoryUsage().rss / 1024 / 1024),
+        value: Math.round(process.memoryUsage().rss / 1024 / 1024),
         unit: 'MiB',
       },
       uptime: process.uptime(),
@@ -144,7 +143,7 @@ const serverStatus = function (app: Express) {
     const system: SystemInfo = {
       loadavg: os.loadavg(),
       freeMemory: {
-        using: Math.round(os.freemem() / 1024 / 1024),
+        value: Math.round(os.freemem() / 1024 / 1024),
         unit: 'MiB',
       },
       hostname: os.hostname(),
