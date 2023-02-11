@@ -1,17 +1,39 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Express, Request, Response, NextFunction } from 'express';
 
 import MyPackageJson from '@/package.json';
 
-const requests = {
-  total: 0,
-  last_minute: 0,
-  last_5mn_avg: 0,
-  last_15mn_avg: 0,
-};
+interface RequestStats {
+  total: number;
+  // per_minute: number[];
+  last_minute: number;
+  last_5mn_avg: number;
+  last_15mn_avg: number;
+}
+
+interface ServerStatus {
+  status: 'up' | 'down';
+  name: string;
+  version: string;
+  started_at: Moment;
+  uptime: number;
+  uptime_human: string;
+  requests: RequestStats;
+  env: string;
+}
+
+interface ServerStatusRequest extends Request {
+  stats: {
+    start: Date;
+    end: Date;
+    responseTime: number;
+  };
+}
+
+const requests = { total: 0 } as RequestStats;
 const requests_per_minute: number[] = [];
 
 for (let i = 0; i < 60; i++) requests_per_minute[i] = 0;
@@ -46,16 +68,7 @@ const resetCounter = function () {
 setInterval(resetCounter, 60 * 1000);
 
 const serverStatus = function (app: Express) {
-  const server = {
-    status: 'up',
-    name: '',
-    version: '',
-    started_at: moment(),
-    uptime: 0,
-    uptime_human: '',
-    requests: {},
-    env: '',
-  };
+  const server = { status: 'up' } as ServerStatus;
 
   const filepath = 'package.json';
 
@@ -76,7 +89,7 @@ const serverStatus = function (app: Express) {
   });
 
   return function (req: any, res: any, next: any) {
-    req.stats = {};
+    req.stats = {} as ServerStatusRequest['stats'];
     req.stats.start = new Date();
 
     // decorate response#end method from express
@@ -98,14 +111,12 @@ const serverStatus = function (app: Express) {
 
     const node = {
       version: process.version,
-      memoryUsage: `${Math.round(
-        process.memoryUsage().rss / 1024 / 1024
-      )} ${'MiB'}`,
+      memoryUsage: `${Math.round(process.memoryUsage().rss / 1024 / 1024)} MiB`,
       uptime: process.uptime(),
     };
     const system = {
       loadavg: os.loadavg(),
-      freeMemory: `${Math.round(os.freemem() / 1024 / 1024)} ${'MiB'}`,
+      freeMemory: `${Math.round(os.freemem() / 1024 / 1024)} MiB`,
       hostname: os.hostname(),
       os: os.platform(),
     };
