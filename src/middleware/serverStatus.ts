@@ -12,7 +12,6 @@ interface RequestStats {
   last_5mn_avg: number;
   last_15mn_avg: number;
 }
-
 interface ServerInfo {
   status: 'up' | 'down';
   name: string;
