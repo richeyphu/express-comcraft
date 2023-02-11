@@ -1,17 +1,63 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { Express, Request, Response, NextFunction } from 'express';
 
-import MyPackageJson from '@/package.json';
+import type MyPackageJson from '@/package.json';
 
-const requests = {
-  total: 0,
-  last_minute: 0,
-  last_5mn_avg: 0,
-  last_15mn_avg: 0,
-};
+interface RequestStats {
+  total: number;
+  last_minute: number;
+  last_5mn_avg: number;
+  last_15mn_avg: number;
+}
+
+interface ServerInfo {
+  status: 'up' | 'down';
+  name: string;
+  version: string;
+  started_at: Moment;
+  uptime: number;
+  uptime_human: string;
+  requests: RequestStats;
+  env: string;
+}
+
+interface NodeInfo {
+  version: string;
+  memoryUsage: {
+    using: number;
+    unit: 'MiB';
+  };
+  uptime: number;
+}
+
+interface SystemInfo {
+  loadavg: number[];
+  freeMemory: {
+    using: number;
+    unit: 'MiB';
+  };
+  hostname: string;
+  os: string;
+}
+
+interface ServerStatus {
+  server: ServerInfo;
+  node: NodeInfo;
+  system: SystemInfo;
+}
+
+interface ServerStatusRequest extends Request {
+  stats: {
+    start: Date;
+    end: Date;
+    responseTime: number;
+  };
+}
+
+const requests = { total: 0 } as RequestStats;
 const requests_per_minute: number[] = [];
 
 for (let i = 0; i < 60; i++) requests_per_minute[i] = 0;
@@ -46,16 +92,7 @@ const resetCounter = function () {
 setInterval(resetCounter, 60 * 1000);
 
 const serverStatus = function (app: Express) {
-  const server = {
-    status: 'up',
-    name: '',
-    version: '',
-    started_at: moment(),
-    uptime: 0,
-    uptime_human: '',
-    requests: {},
-    env: '',
-  };
+  const server = { status: 'up' } as ServerInfo;
 
   const filepath = 'package.json';
 
@@ -65,6 +102,7 @@ const serverStatus = function (app: Express) {
     server.name = pkg.name;
     server.version = pkg.version;
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('express-server-status> Error loading ' + filepath, e);
   }
 
@@ -76,7 +114,7 @@ const serverStatus = function (app: Express) {
   });
 
   return function (req: any, res: any, next: any) {
-    req.stats = {};
+    req.stats = {} as ServerStatusRequest['stats'];
     req.stats.start = new Date();
 
     // decorate response#end method from express
@@ -96,16 +134,20 @@ const serverStatus = function (app: Express) {
     server.uptime_human = moment(uptime_start).fromNow();
     server.env = process.env.NODE_ENV || 'unknown';
 
-    const node = {
+    const node: NodeInfo = {
       version: process.version,
-      memoryUsage: `${Math.round(
-        process.memoryUsage().rss / 1024 / 1024
-      )} ${'MiB'}`,
+      memoryUsage: {
+        using: Math.round(process.memoryUsage().rss / 1024 / 1024),
+        unit: 'MiB',
+      },
       uptime: process.uptime(),
     };
-    const system = {
+    const system: SystemInfo = {
       loadavg: os.loadavg(),
-      freeMemory: `${Math.round(os.freemem() / 1024 / 1024)} ${'MiB'}`,
+      freeMemory: {
+        using: Math.round(os.freemem() / 1024 / 1024),
+        unit: 'MiB',
+      },
       hostname: os.hostname(),
       os: os.platform(),
     };
@@ -115,7 +157,7 @@ const serverStatus = function (app: Express) {
     requests.last_5mn_avg = sum(requests_per_minute, minute, 5);
     requests.last_15mn_avg = average(requests_per_minute, 0, 15);
     server.requests = requests;
-    const status = { server, /*git: git_data,*/ node, system };
+    const status: ServerStatus = { server, node, system };
 
     res.send(status);
   };
