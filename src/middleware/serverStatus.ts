@@ -1,7 +1,5 @@
-import path from 'path';
 import os from 'os';
-import fs from 'fs';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { Express, Request, Response, NextFunction } from 'express';
 
 import type MyPackageJson from '@/package.json';
@@ -16,7 +14,7 @@ interface ServerInfo {
   status: 'up' | 'down';
   name: string;
   version: string;
-  started_at: Moment;
+  started_at: string;
   uptime: number;
   uptime_human: string;
   requests: RequestStats;
@@ -59,13 +57,6 @@ const requests = { total: 0 } as RequestStats;
 const requests_per_minute: number[] = Array<number>(60).fill(0);
 
 const uptime_start = new Date();
-// const exec = require('child_process').exec;
-// const git_data = {};
-// exec(__dirname + '/lib/get_git_data.sh', function (err, res, stderr) {
-//   const cols = res.trim().split(',');
-//   git_data.branch = cols[0];
-//   git_data.sha = cols[1] && cols[1].substr(0, 7);
-// });
 
 const sum = (arr: number[], from: number, length: number): number => {
   let total = 0;
@@ -109,25 +100,29 @@ const serverStatus = (app: Express) => {
     return next();
   });
 
-  const response = (req: any, res: any, next: any): void => {
+  const response = (
+    req: ServerStatusRequest,
+    res: Response & any,
+    next: NextFunction | unknown
+  ): void => {
     req.stats = {} as ServerStatusRequest['stats'];
     req.stats.start = new Date();
 
-    // decorate response#end method from express
+    // decorate response `end` method from express
     const end = res.end;
-    res.end = (...args: unknown[]) => {
-      req.stats.responseTime = new Date().getTime() - req.stats.start;
-      // call to original express#res.end()
+    res.end = (...args: any[]): void => {
+      req.stats.responseTime = new Date().getTime() - req.stats.start.getTime();
+      // call to original express `res.end()` method
       res.setHeader('X-Response-Time', req.stats.responseTime);
       end.apply(res, args);
     };
 
     const minute = new Date().getMinutes();
-    server.started_at = moment(uptime_start);
+    server.started_at = moment(uptime_start).toDate() as unknown as string;
     server.uptime = Math.round(
       (new Date().getTime() - uptime_start.getTime()) / 1000
     );
-    server.uptime_human = moment(uptime_start).fromNow();
+    server.uptime_human = moment(uptime_start).fromNow() as unknown as string;
     server.env = process.env.NODE_ENV || null;
 
     const node: NodeInfo = {
