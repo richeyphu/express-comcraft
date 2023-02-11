@@ -56,9 +56,7 @@ interface ServerStatusRequest extends Request {
 }
 
 const requests = { total: 0 } as RequestStats;
-const requests_per_minute: number[] = [];
-
-for (let i = 0; i < 60; i++) requests_per_minute[i] = 0;
+const requests_per_minute: number[] = Array<number>(60).fill(0);
 
 const uptime_start = new Date();
 // const exec = require('child_process').exec;
@@ -69,7 +67,7 @@ const uptime_start = new Date();
 //   git_data.sha = cols[1] && cols[1].substr(0, 7);
 // });
 
-const sum = function (arr: number[], from: number, length: number) {
+const sum = (arr: number[], from: number, length: number): number => {
   let total = 0;
   for (let i = from - length; i < from; i++) {
     total += arr[(i + arr.length) % arr.length];
@@ -77,19 +75,19 @@ const sum = function (arr: number[], from: number, length: number) {
   return total;
 };
 
-const average = function (arr: number[], from: number, length: number) {
+const average = (arr: number[], from: number, length: number): number => {
   const total = sum(arr, from, length);
   return Math.round(total / arr.length);
 };
 
-const resetCounter = function () {
+const resetCounter = (): void => {
   const minute = new Date().getMinutes();
   requests_per_minute[(minute + 1) % 59] = 0;
 };
 // Every minute, we reset the oldest entry
 setInterval(resetCounter, 60 * 1000);
 
-const serverStatus = function (app: Express) {
+const serverStatus = (app: Express) => {
   const server = { status: 'up' } as ServerInfo;
 
   const filepath = 'package.json';
@@ -104,24 +102,24 @@ const serverStatus = function (app: Express) {
     console.error('express-server-status> Error loading ' + filepath, e);
   }
 
-  app.get('*', function (req: Request, res: Response, next: NextFunction) {
+  app.get('*', (req: Request, res: Response, next: NextFunction): void => {
     requests.total++;
     const minute = new Date().getMinutes();
     requests_per_minute[minute]++;
     return next();
   });
 
-  return function (req: any, res: any, next: any) {
+  const response = (req: any, res: any, next: any): void => {
     req.stats = {} as ServerStatusRequest['stats'];
     req.stats.start = new Date();
 
     // decorate response#end method from express
     const end = res.end;
-    res.end = function () {
+    res.end = (...args: unknown[]) => {
       req.stats.responseTime = new Date().getTime() - req.stats.start;
       // call to original express#res.end()
       res.setHeader('X-Response-Time', req.stats.responseTime);
-      end.apply(res, arguments);
+      end.apply(res, args);
     };
 
     const minute = new Date().getMinutes();
@@ -159,6 +157,8 @@ const serverStatus = function (app: Express) {
 
     res.send(status);
   };
+
+  return response;
 };
 
 export default serverStatus;
