@@ -10,7 +10,7 @@ import productRouter from '@routes/product';
 import adminRouter from '@routes/admin';
 
 import { env } from '@config';
-import { errorHandler } from '@middleware';
+import { errorHandler, serverStatus } from '@middleware';
 
 const app: Express = express();
 
@@ -24,6 +24,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/status', serverStatus(app));
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
