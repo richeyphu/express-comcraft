@@ -22,6 +22,7 @@ specifiers:
   express: ~4.18.2
   express-validator: ^6.14.3
   jsonwebtoken: ^9.0.0
+  moment: ^2.29.4
   mongoose: ^5.13.15
   morgan: ~1.10.0
   passport: ^0.6.0
@@ -41,6 +42,7 @@ dependencies:
   express: 4.18.2
   express-validator: 6.14.3
   jsonwebtoken: 9.0.0
+  moment: 2.29.4
   mongoose: 5.13.15
   morgan: 1.10.0
   passport: 0.6.0
@@ -1572,6 +1574,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
 
   /mongodb/3.7.3:
     resolution: {integrity: sha512-Psm+g3/wHXhjBEktkxXsFMZvd3nemI0r3IPsE0bU+4//PnvNWKkzhZcEsbPcYiWqe8XqXJJEg4Tgtr7Raw67Yw==}
