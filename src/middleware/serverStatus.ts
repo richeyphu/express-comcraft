@@ -2,6 +2,7 @@ import os from 'os';
 import moment from 'moment';
 import { Express, Request, Response, NextFunction } from 'express';
 
+import { env } from '@config';
 import type MyPackageJson from '@/package.json';
 
 interface RequestStats {
@@ -130,7 +131,7 @@ const serverStatus = (app: Express) => {
       (new Date().getTime() - uptime_start.getTime()) / 1000
     );
     server.uptime_human = moment(uptime_start).fromNow() as unknown as string;
-    server.env = process.env.NODE_ENV || null;
+    server.env = env.NODE_ENV;
 
     const node: NodeInfo = {
       version: process.version,
