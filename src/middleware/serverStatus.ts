@@ -113,15 +113,17 @@ const serverStatus = (app: Express) => {
     next: NextFunction
   ): void => {
     req.stats = {} as RequestWithServerStatus['stats'];
-    req.stats!.start = new Date();
+    if (req.stats) req.stats.start = new Date();
 
     // decorate response `end` method from express
     const end = res.end;
     res.end = (...args): void => {
-      req.stats!.responseTime =
-        new Date().getTime() - req.stats!.start.getTime();
-      // call to original express `res.end()` method
-      res.setHeader('X-Response-Time', req.stats!.responseTime);
+      if (req.stats) {
+        req.stats.responseTime =
+          new Date().getTime() - req.stats.start.getTime();
+        // call to original express `res.end()` method
+        res.setHeader('X-Response-Time', req.stats.responseTime);
+      }
       end.apply(res, args);
     };
 
