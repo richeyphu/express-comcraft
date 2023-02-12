@@ -10,7 +10,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["*/bin/www"],
+  // "ignorePatterns": ["*/bin/www"],
   "rules": {
     "max-len": [
       "warn",
@@ -27,6 +27,7 @@
     "@typescript-eslint/no-floating-promises": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/restrict-template-expressions": 0,
     "node/no-process-env": 1,
     "node/no-unsupported-features/es-syntax": [
       "error",
