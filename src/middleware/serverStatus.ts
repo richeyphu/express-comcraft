@@ -53,8 +53,6 @@ interface RequestWithServerStatus extends Request {
   };
 }
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-
 interface ResponseWithServerStatus extends Omit<Response, 'end'> {
   end: (...args: never[]) => void;
 }
