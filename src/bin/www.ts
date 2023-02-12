@@ -1,6 +1,5 @@
 /* eslint-disable no-process-exit */
 /* eslint-disable no-console */
-/* eslint-disable indent */
 
 /**
  * Module dependencies.
