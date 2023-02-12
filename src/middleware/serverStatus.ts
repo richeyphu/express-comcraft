@@ -104,7 +104,7 @@ const timeSince = (timeStamp: Date) => {
     return getTimeAgo(Math.floor(secondsPast / 2628000), 'month');
   }
   // if (secondsPast > 31536000)
-  return `${Math.floor(secondsPast / 31536000)} y`;
+  return getTimeAgo(Math.floor(secondsPast / 31536000), 'year');
 };
 
 const serverStatus = (app: Express) => {
