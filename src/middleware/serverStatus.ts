@@ -45,12 +45,18 @@ interface ServerStatus {
   system: SystemInfo;
 }
 
-interface ServerStatusRequest extends Request {
-  stats: {
+interface RequestWithServerStatus extends Request {
+  stats?: {
     start: Date;
     end: Date;
     responseTime: number;
   };
+}
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+interface ResponseWithServerStatus extends Omit<Response, 'end'> {
+  end: (...args: never[]) => void;
 }
 
 const requests = { total: 0 } as RequestStats;
@@ -101,19 +107,20 @@ const serverStatus = (app: Express) => {
   });
 
   const response = (
-    req: ServerStatusRequest,
-    res: Response & any,
-    next: NextFunction | unknown
+    req: RequestWithServerStatus,
+    res: ResponseWithServerStatus,
+    next: NextFunction
   ): void => {
-    req.stats = {} as ServerStatusRequest['stats'];
-    req.stats.start = new Date();
+    req.stats = {} as RequestWithServerStatus['stats'];
+    req.stats!.start = new Date();
 
     // decorate response `end` method from express
     const end = res.end;
-    res.end = (...args: any[]): void => {
-      req.stats.responseTime = new Date().getTime() - req.stats.start.getTime();
+    res.end = (...args): void => {
+      req.stats!.responseTime =
+        new Date().getTime() - req.stats!.start.getTime();
       // call to original express `res.end()` method
-      res.setHeader('X-Response-Time', req.stats.responseTime);
+      res.setHeader('X-Response-Time', req.stats!.responseTime);
       end.apply(res, args);
     };
 
