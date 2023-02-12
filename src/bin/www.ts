@@ -6,11 +6,11 @@
  */
 
 import app from '@src/app';
-import Debug from 'debug';
-import http from 'http';
+import Debug, { Debugger } from 'debug';
+import http, { Server } from 'http';
 import { env } from '@config';
 
-const debug = Debug('express-final-project:server');
+const debug: Debugger = Debug('express-final-project:server');
 
 /**
  * Get port from environment and store in Express.
@@ -23,7 +23,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+const server: Server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -83,7 +83,7 @@ function onError(error: NodeJS.ErrnoException): void {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening(): void {
   const addr = server.address();
   const bind = typeof addr === 'string' ? 'pipe ' + addr : `port ${addr?.port}`;
   debug('Listening on ' + bind);
