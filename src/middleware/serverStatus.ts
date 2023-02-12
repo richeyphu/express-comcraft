@@ -1,5 +1,4 @@
 import os from 'os';
-import moment from 'moment';
 import { Express, Request, Response, NextFunction } from 'express';
 
 import { env } from '@config';
@@ -85,6 +84,31 @@ const resetCounter = (): void => {
 // Every minute, we reset the oldest entry
 setInterval(resetCounter, 60 * 1000);
 
+const timeSince = (timeStamp: Date) => {
+  const now: Date = new Date();
+  const secondsPast: number = (now.getTime() - timeStamp.getTime()) / 1000;
+  const getTimeAgo = (time: number, unit: string): string => {
+    return `${time} ${unit}${time > 1 ? 's' : ''} ago`;
+  };
+  if (secondsPast < 60) {
+    return getTimeAgo(Math.round(secondsPast), 'second');
+  }
+  if (secondsPast < 3600) {
+    return getTimeAgo(Math.floor(secondsPast / 60), 'minute');
+  }
+  if (secondsPast <= 86400) {
+    return getTimeAgo(Math.floor(secondsPast / 3600), 'hour');
+  }
+  if (secondsPast <= 2628000) {
+    return getTimeAgo(Math.floor(secondsPast / 86400), 'day');
+  }
+  if (secondsPast <= 31536000) {
+    return getTimeAgo(Math.floor(secondsPast / 2628000), 'month');
+  }
+  // if (secondsPast > 31536000)
+  return `${Math.floor(secondsPast / 31536000)} y`;
+};
+
 const serverStatus = (app: Express) => {
   const server = { status: 'up' } as ServerInfo;
 
@@ -128,11 +152,11 @@ const serverStatus = (app: Express) => {
     };
 
     const minute = new Date().getMinutes();
-    server.started_at = moment(uptime_start).toDate() as unknown as string;
+    server.started_at = uptime_start.toISOString();
     server.uptime = Math.round(
       (new Date().getTime() - uptime_start.getTime()) / 1000
     );
-    server.uptime_human = moment(uptime_start).fromNow() as unknown as string;
+    server.uptime_human = timeSince(uptime_start);
     server.env = env.NODE_ENV;
 
     const node: NodeInfo = {
