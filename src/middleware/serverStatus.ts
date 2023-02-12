@@ -13,8 +13,8 @@ interface RequestStats {
 }
 interface ServerInfo {
   status: 'up' | 'down';
-  name: string;
-  version: string;
+  name: string | null;
+  version: string | null;
   started_at: string;
   uptime: number;
   uptime_human: string;
@@ -93,8 +93,8 @@ const serverStatus = (app: Express) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const pkg = require(filepath) as typeof MyPackageJson;
-    server.name = pkg.name;
-    server.version = pkg.version;
+    server.name = pkg.name ?? null;
+    server.version = pkg.version ?? null;
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error('express-server-status> Error loading ' + filepath, e);
