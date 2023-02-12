@@ -1,19 +1,23 @@
-#!/usr/bin/env node
+/* eslint-disable no-process-exit */
+/* eslint-disable no-console */
+/* eslint-disable indent */
 
 /**
  * Module dependencies.
  */
 
-const app = require('../app');
-const debug = require('debug')('express-final-project:server');
-const http = require('http');
-require('dotenv').config();
+import app from '@src/app';
+import Debug from 'debug';
+import http from 'http';
+import { env } from '@config';
+
+const debug = Debug('express-final-project:server');
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -34,8 +38,8 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  const port = parseInt(val, 10);
+function normalizePort(val: string | number): string | number | false {
+  const port = parseInt(String(val), 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -54,12 +58,12 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  const bind = typeof port === 'string' ? 'Pipe ' + port : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -82,6 +86,6 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : `port ${addr?.port}`;
   debug('Listening on ' + bind);
 }

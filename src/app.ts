@@ -33,4 +33,4 @@ app.use('/admin', adminRouter);
 
 app.use(errorHandler);
 
-module.exports = app;
+export default app;
