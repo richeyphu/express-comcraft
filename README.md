@@ -1,8 +1,8 @@
 # express-comshop
 
-RESTful API backend for a computer store.
+RESTful API server for a computer store, built with Express and MongoDB.
 
-> The final project of `Build RESTful API with MongoDB, Node.js and Express` course.
+> *The final project of `Build RESTful API with MongoDB, Node.js and Express` course.*
 
 ## Usage
 
