@@ -1,2 +1,5 @@
-export { default as User, IUser } from './userModel';
-export { default as Product, IProduct } from './productModel';
+export { default as User } from './userModel';
+export * from './userModel';
+
+export { default as Product } from './productModel';
+export * from './productModel';

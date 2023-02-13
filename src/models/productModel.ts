@@ -1,12 +1,27 @@
 import { Schema, model, Document } from 'mongoose';
 
+export const productCategory = [
+  'cpu',
+  'mobo',
+  'gpu',
+  'ram',
+  'ssd',
+  'hdd',
+  'psu',
+  'case',
+  'cooler',
+  'monitor',
+  'other',
+] as const;
+export type ProductCategory = (typeof productCategory)[number];
+
 export interface IProduct extends Document {
   name: string;
-  price: string;
-  description?: string;
-  category?: string;
-  brand?: string;
-  photo?: string;
+  price: number;
+  description?: string | null;
+  category?: ProductCategory;
+  brand?: string | null;
+  photo?: string | 'nopic.png';
 }
 
 const productSchema = new Schema<IProduct>(
@@ -23,17 +38,18 @@ const productSchema = new Schema<IProduct>(
     description: {
       type: String,
       trim: true,
-      default: 'n/a',
+      default: null,
     },
     category: {
       type: String,
       trim: true,
       default: 'other',
+      lowercase: true,
     },
     brand: {
       type: String,
       trim: true,
-      default: 'n/a',
+      default: null,
     },
     photo: {
       type: String,

@@ -1,11 +1,14 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
+export const userRole = ['member', 'admin'] as const;
+export type UserRole = (typeof userRole)[number];
+
 export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role?: string;
+  role?: UserRole;
   encryptPassword: (password: string) => string;
   checkPassword: (password: string) => boolean;
 }
