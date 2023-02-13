@@ -1,6 +1,8 @@
-# express-final-project
+# express-comshop
 
-The final project of `Build RESTful API with MongoDB, Node.js and Express` course.
+RESTful API backend for a computer store.
+
+> The final project of `Build RESTful API with MongoDB, Node.js and Express` course.
 
 ## Usage
 
@@ -28,4 +30,5 @@ JWT_SECRET=Your_JWT_Secret
 ```
 
 ## License
+
 Licensed under the [MIT License](LICENSE).
