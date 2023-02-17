@@ -10,7 +10,7 @@ import Debug, { Debugger } from 'debug';
 import http, { Server } from 'http';
 import { env } from '@config';
 
-const debug: Debugger = Debug('express-final-project:server');
+const debug: Debugger = Debug('express-comcraft:server');
 
 /**
  * Get port from environment and store in Express.

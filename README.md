@@ -1,4 +1,4 @@
-# express-comshop
+# express-comcraft
 
 RESTful API server for a computer store, built with [Express](https://expressjs.com) and [MongoDB](https://www.mongodb.com).
 
