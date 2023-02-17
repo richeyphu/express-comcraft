@@ -122,7 +122,8 @@ const serverStatus = (app: Express) => {
     console.error('express-server-status> Error loading ' + filepath, e);
   }
 
-  app.get('*', (req: Request, res: Response, next: NextFunction): void => {
+  // Create a middleware to count requests
+  app.use((req: Request, res: Response, next: NextFunction): void => {
     requests.total++;
     const minute = new Date().getMinutes();
     requests_per_minute[minute]++;
