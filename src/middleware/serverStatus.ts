@@ -110,16 +110,14 @@ const timeSince = (timeStamp: Date) => {
 const serverStatus = (app: Express) => {
   const server = { status: 'up' } as ServerInfo;
 
-  const filepath = 'package.json';
-
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pkg = require(filepath) as typeof MyPackageJson;
+    const pkg = require("../../package.json") as typeof MyPackageJson;
     server.name = pkg.name ?? null;
     server.version = pkg.version ?? null;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.error('express-server-status> Error loading ' + filepath, e);
+    console.error('express-server-status> Error loading package.json', e);
   }
 
   // Create a middleware to count requests
