@@ -10,7 +10,7 @@
     "dev": "tsnd -r tsconfig-paths/register --rs ./src/bin/www",
     "lint": "eslint --ext .ts ./src",
     "prettier": "prettier --write ./src/**/*.{ts,js,json,css,scss,md}",
-    "test": "jest --forceExit"
+    "test": "jest --coverage --forceExit"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
