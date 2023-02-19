@@ -1,5 +1,5 @@
 import { Schema, model, Document } from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export const userRole = ['member', 'admin'] as const;
 export type UserRole = (typeof userRole)[number];
