@@ -1,5 +1,6 @@
 import os from 'os';
 import { Express, Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
 
 import { env } from '@config';
 import type MyPackageJson from '@/package.json';
@@ -19,6 +20,7 @@ interface ServerInfo {
   uptime_human: string;
   requests: RequestStats;
   env: string | null;
+  db_status: keyof typeof mongoose.STATES;
 }
 
 interface NodeInfo {
@@ -112,7 +114,7 @@ const serverStatus = (app: Express) => {
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pkg = require("../../package.json") as typeof MyPackageJson;
+    const pkg = require('../../package.json') as typeof MyPackageJson;
     server.name = pkg.name ?? null;
     server.version = pkg.version ?? null;
   } catch (e) {
@@ -155,6 +157,9 @@ const serverStatus = (app: Express) => {
     );
     server.uptime_human = timeSince(uptime_start);
     server.env = env.NODE_ENV;
+    server.db_status = mongoose.STATES[
+      mongoose.connection.readyState
+    ] as keyof typeof mongoose.STATES;
 
     const node: NodeInfo = {
       version: process.version,
@@ -179,6 +184,7 @@ const serverStatus = (app: Express) => {
     requests.last_5mn_avg = sum(requests_per_minute, minute, 5);
     requests.last_15mn_avg = average(requests_per_minute, 0, 15);
     server.requests = requests;
+
     const status: ServerStatus = { server, node, system };
 
     res.send(status);
