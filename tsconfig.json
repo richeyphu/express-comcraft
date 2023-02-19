@@ -92,6 +92,6 @@
     },
     "useUnknownInCatchVariables": false
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["public/"]
 }
