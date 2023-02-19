@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs';
 import path from 'path';
-import uuid from 'uuid';
+import { v4 } from 'uuid';
 
 export type Image = {
   type: string;
@@ -23,9 +23,9 @@ export const saveImageToDisk = (baseImage: string): string => {
   // Random file name with extension
   let filename = '';
   if (ext === 'svg+xml') {
-    filename = `${uuid.v4()}.svg`;
+    filename = `${v4()}.svg`;
   } else {
-    filename = `${uuid.v4()}.${ext}`;
+    filename = `${v4()}.${ext}`;
   }
 
   // Extract base64 data from base64 string
@@ -46,7 +46,7 @@ export const decodeBase64Image = (base64Str: string): Image => {
   if (!matches || matches.length !== 3) {
     throw new Error('Invalid base64 string');
   }
-  
+
   const image = { type: matches[1], data: matches[2] };
 
   return image;
