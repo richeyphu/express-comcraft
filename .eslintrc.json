@@ -10,7 +10,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["public/", "tests/", "jest.config.js"],
+  "ignorePatterns": ["public/", "tests/", "build", "jest.config.js"],
   "rules": {
     "max-len": [
       "warn",

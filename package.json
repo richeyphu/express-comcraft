@@ -6,14 +6,20 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register ./src/bin/www",
     "dev": "tsnd -r tsconfig-paths/register --rs ./src/bin/www",
+    "start": "ts-node -r tsconfig-paths/register ./src/bin/www",
+    "start:build": "node ./build/index.js",
+    "start:docker": "docker run -p 3000:3000 express-comcraft",
     "lint": "eslint --ext .ts ./src",
     "prettier": "prettier --write ./src/**/*.{ts,js,json,css,scss,md}",
-    "test": "jest --coverage --forceExit"
+    "test": "jest --coverage --forceExit",
+    "bundle": "esbuild ./src/bin/www --platform=node --bundle --minify --outfile=build/index.js",
+    "build": "pnpm test && pnpm bundle",
+    "build:docker": "pnpm build && pnpm docker",
+    "docker": "docker build -t express-comcraft ."
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.4",
     "dotenv": "^16.0.3",
@@ -27,7 +33,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "~1.4.3",
     "@types/debug": "~4.1.7",
     "@types/eslint": "^8.21.1",
@@ -43,6 +49,7 @@
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
+    "esbuild": "^0.17.9",
     "eslint": "^8.34.0",
     "eslint-plugin-node": "^11.1.0",
     "jest": "^29.4.3",
