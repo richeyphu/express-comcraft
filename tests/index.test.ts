@@ -1,5 +1,6 @@
 import app from '@src/app';
 import supertest, { SuperTest, Test } from 'supertest';
+import mongoose from 'mongoose';
 
 const request: SuperTest<Test> = supertest(app);
 
@@ -64,4 +65,9 @@ describe('Route /admin', () => {
     const response = await request.get('/admin');
     expect(response.statusCode).toBe(418);
   });
+});
+
+afterAll(async () => {
+  // Connection to Mongo killed.
+  await mongoose.disconnect();
 });
