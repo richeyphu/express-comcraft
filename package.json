@@ -15,7 +15,7 @@
     "test": "jest --coverage --forceExit",
     "bundle": "esbuild ./src/bin/www --platform=node --bundle --minify --outfile=build/index.js",
     "build": "pnpm test && pnpm bundle",
-    "build:docker": "pnpm build && pnpm docker",
+    "build:docker": "pnpm build && pnpm docker:build",
     "docker": "pnpm docker:build",
     "docker:build": "docker build -t express-comcraft -f docker/build.Dockerfile .",
     "docker:dev": "docker build -t express-comcraft-dev -f docker/dev.Dockerfile ."
