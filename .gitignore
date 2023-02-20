@@ -63,5 +63,5 @@ typings/
 # Mac files
 .DS_Store
 
-# project built files
+# esbuild bundle output
 build
