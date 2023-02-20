@@ -1,6 +1,10 @@
 # express-comcraft
 
-RESTful API server for a computer store, built with [Express](https://expressjs.com), [MongoDB](https://www.mongodb.com) and ❤️.
+![cover](public/images/cover.png)
+
+<p align="center">
+RESTful API server for a computer store, built with <a href="https://expressjs.com">Express.js</a>, <a href="https://www.mongodb.com">MongoDB</a> and ❤️
+</p>
 
 > _The final project of `Build RESTful API with MongoDB, Node.js and Express` (ITE-497) course._
 
