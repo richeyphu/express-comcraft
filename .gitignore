@@ -65,3 +65,7 @@ typings/
 
 # esbuild bundle output
 build
+
+# Project generated files
+public/images/products
+public/images/shops
