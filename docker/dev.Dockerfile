@@ -15,7 +15,9 @@ RUN pnpm install && pnpm store prune
 
 # Copy source code
 COPY /src /app/src/
-COPY /public/images/nopic.png /app/public/images/
+
+# Copy assets
+COPY /public/images/nopic.png /public/images/cover.png /app/public/images/
 
 EXPOSE 3000
 

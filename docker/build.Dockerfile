@@ -8,8 +8,12 @@ ENV NODE_ENV=production
 
 # Copy project files
 COPY package.json .env /app/
-COPY /public/images/nopic.png /app/public/images/
+
+# Copy source code
 COPY /build /app/build/
+
+# Copy assets
+COPY /public/images/nopic.png /public/images/cover.png /app/public/images/
 
 EXPOSE 3000
 
