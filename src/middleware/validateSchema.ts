@@ -50,7 +50,7 @@ const userRegisterSchema: Schema = {
   role: {
     isIn: {
       errorMessage: 'ประเภทผู้ใช้ไม่ถูกต้อง',
-      options: [...userRole, null],
+      options: [[...userRole], null],
     },
   },
 };
@@ -79,7 +79,7 @@ const productInsertSchema: Schema = {
   category: {
     isIn: {
       errorMessage: 'ประเภทสินค้าไม่ถูกต้อง',
-      options: [...productCategory, null],
+      options: [[...productCategory], null],
     },
   },
 };
