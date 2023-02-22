@@ -7,8 +7,9 @@ import { User, IUser } from '@models';
 import { IError } from '@middleware';
 
 const index = (req: Request, res: Response, next: NextFunction): void => {
-  res.status(StatusCode.OK).json({
-    fullname: 'Phurit Dechaboonsiripanit',
+  const { role, name, email } = req.user as IUser;
+  res.status(200).json({
+    user: { name, email, role },
   });
 };
 

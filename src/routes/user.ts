@@ -1,12 +1,12 @@
 import express, { Router } from 'express';
 
 import { userController } from '@controllers';
-import { validateSchema } from '@middleware';
+import { validateSchema, isLogin } from '@middleware';
 
 const userRouter: Router = express.Router();
 
 /* GET users listing. */
-userRouter.get('/', userController.index);
+userRouter.get('/', isLogin, userController.index);
 
 userRouter.post(
   '/register',
