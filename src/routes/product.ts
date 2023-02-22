@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import { checkSchema } from 'express-validator';
 
 import { productController } from '@controllers';
-import { validateSchema } from '@middleware';
+import { validateSchema, isLogin, isAdmin } from '@middleware';
 
 const productRouter: Router = express.Router();
 
@@ -11,6 +11,20 @@ productRouter.get('/', productController.index);
 productRouter.get('/q/:id', productController.showById);
 productRouter.get('/:cat', productController.showByCategory);
 
-productRouter.post('/', validateSchema.productInsert, productController.insert);
+productRouter.post(
+  '/',
+  isLogin,
+  isAdmin,
+  validateSchema.productInsert,
+  productController.insert
+);
+
+productRouter.put(
+  '/q/:id',
+  validateSchema.productUpdate,
+  productController.update
+);
+
+productRouter.delete('/q/:id', productController.destroy);
 
 export default productRouter;

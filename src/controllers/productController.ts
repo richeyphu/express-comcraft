@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import { env, StatusCode } from '@config';
 import { Product, IProduct } from '@models';
 import { IError } from '@middleware';
-import { isCorrectOid } from '@utils';
+import { isCorrectOid, saveImageToDisk } from '@utils';
 
 const index = async (
   req: Request,
@@ -42,12 +42,12 @@ const insert = async (
     }
 
     const product = new Product({
-      name,
-      price,
-      description,
-      brand,
-      category,
-      photo,
+      ...(name && { name }),
+      ...(price && { price }),
+      ...(description && { description }),
+      ...(category && { category }),
+      ...(brand && { brand }),
+      ...(photo && { photo: saveImageToDisk(photo) }),
     });
     await product.save();
 
@@ -113,4 +113,66 @@ const showByCategory = async (
   }
 };
 
-export { index, insert, showById, showByCategory };
+const update = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { name, price, description, category, brand, photo } =
+      req.body as IProduct;
+
+    const product = await Product.updateOne(
+      { _id: id },
+      {
+        ...(name && { name }),
+        ...(price && { price }),
+        ...(description && { description }),
+        ...(category && { category }),
+        ...(brand && { brand }),
+        ...(photo && { photo: saveImageToDisk(photo) }),
+      }
+    );
+
+    if (product.nModified === 0) {
+      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบบริษัท');
+      error.statusCode = 400;
+      throw error;
+    } else {
+      res.status(200).json({
+        message: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const destroy = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.deleteOne({
+      _id: id,
+    });
+
+    if (product.deletedCount === 0) {
+      const error: IError = new Error('ไม่สามารถลบข้อมูลได้ / ไม่พบบริษัท');
+      error.statusCode = 400;
+      throw error;
+    } else {
+      res.status(200).json({
+        message: 'ลบข้อมูลเรียบร้อยแล้ว',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { index, insert, showById, showByCategory, update, destroy };

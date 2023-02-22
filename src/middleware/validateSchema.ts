@@ -82,8 +82,33 @@ const productInsertSchema: Schema = {
       options: [[...productCategory], null],
     },
   },
+  photo: {
+    isBase64: {
+      errorMessage: 'รูปภาพไม่ถูกต้อง',
+    },
+  },
+};
+
+const productUpdateSchema: Schema = {
+  price: {
+    isNumeric: {
+      errorMessage: 'ราคาต้องเป็นตัวเลขเท่านั้น',
+    },
+  },
+  category: {
+    isIn: {
+      errorMessage: 'ประเภทสินค้าไม่ถูกต้อง',
+      options: [[...productCategory], null],
+    },
+  },
+  photo: {
+    isBase64: {
+      errorMessage: 'รูปภาพไม่ถูกต้อง',
+    },
+  },
 };
 
 const productInsert = checkSchema(productInsertSchema);
+const productUpdate = checkSchema(productUpdateSchema);
 
-export { productInsert };
+export { productInsert, productUpdate };
