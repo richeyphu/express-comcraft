@@ -9,6 +9,7 @@ import { JwtPayload } from 'jsonwebtoken';
 
 import { env } from '@config';
 import { User, IUser } from '@models';
+import { RequestHandler } from 'express';
 
 interface IJwtPayload extends JwtPayload {
   id: string;
@@ -40,6 +41,8 @@ passport.use(
   )
 );
 
-const isLogin: unknown = passport.authenticate('jwt', { session: false });
+const isLogin = passport.authenticate('jwt', {
+  session: false,
+}) as RequestHandler;
 
 export default isLogin;
