@@ -97,7 +97,9 @@ const productUpdateSchema: Schema = {
   },
   category: {
     isIn: {
-      errorMessage: 'ประเภทสินค้าไม่ถูกต้อง',
+      errorMessage: `ประเภทสินค้าไม่ถูกต้อง : ['${[...productCategory].join(
+        "', '"
+      )}']`,
       options: [[...productCategory], null],
     },
   },

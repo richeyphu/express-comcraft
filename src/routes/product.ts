@@ -21,6 +21,8 @@ productRouter.post(
 
 productRouter.put(
   '/q/:id',
+  isLogin,
+  isAdmin,
   validateSchema.productUpdate,
   productController.update
 );

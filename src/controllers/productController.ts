@@ -32,7 +32,7 @@ const insert = async (
     const { name, price, description, brand, category, photo } =
       req.body as IProduct;
 
-    // validation
+    // Validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
@@ -123,6 +123,15 @@ const update = async (
     const { name, price, description, category, brand, photo } =
       req.body as IProduct;
 
+    // Validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      error.validation = errors.array();
+      throw error;
+    }
+
     const product = await Product.updateOne(
       { _id: id },
       {
@@ -136,7 +145,7 @@ const update = async (
     );
 
     if (product.nModified === 0) {
-      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบบริษัท');
+      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบสินค้า');
       error.statusCode = 400;
       throw error;
     } else {
