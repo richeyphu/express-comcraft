@@ -1,5 +1,7 @@
 import { Schema, model, Document } from 'mongoose';
 
+import { TEL_REGEX } from '@utils';
+
 export interface IAddress extends Document {
   name: string;
   tel: string;
@@ -24,6 +26,7 @@ const schema = new Schema<IAddress>(
       type: String,
       required: true,
       trim: true,
+      match: TEL_REGEX,
     },
     address: {
       line1: {

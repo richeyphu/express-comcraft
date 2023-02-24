@@ -1,7 +1,7 @@
 import { checkSchema, Schema } from 'express-validator';
 
 import { productCategory } from '@models';
-import { BASE64_IMAGE_REGEX } from '@utils';
+import { TEL_REGEX, BASE64_IMAGE_REGEX } from '@utils';
 
 /*** Login Schema ***/
 
@@ -59,6 +59,10 @@ const userAddressSchema: Schema = {
   tel: {
     notEmpty: {
       errorMessage: 'กรุณาเบอร์โทรศัพท์ด้วย',
+    },
+    matches: {
+      errorMessage: 'รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง',
+      options: TEL_REGEX,
     },
   },
   'address.line1': {
