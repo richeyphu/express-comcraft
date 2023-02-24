@@ -9,6 +9,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role?: UserRole;
+  wishlist?: Schema.Types.ObjectId[];
   encryptPassword: (password: string) => string;
   checkPassword: (password: string) => boolean;
   _id: Schema.Types.ObjectId;
@@ -38,6 +39,11 @@ const schema = new Schema<IUser>(
       type: String,
       default: 'member',
     },
+    wishlist: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Product',
+      default: [],
+    },
   },
   {
     collection: 'users',
@@ -52,7 +58,7 @@ schema.methods.encryptPassword = (password: string): string => {
 };
 
 schema.methods.checkPassword = function (password: string): boolean {
-  const isValid = bcrypt.compareSync(password, this.password);
+  const isValid = bcrypt.compareSync(password, this.password as string);
   return isValid;
 };
 

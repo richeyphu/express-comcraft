@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
 import { env, StatusCode } from '@config';
-import { Product, IProduct } from '@models';
+import { Product, IProduct, User, IUser } from '@models';
 import { IError } from '@middleware';
 import { isOid, saveImageToDisk } from '@utils';
 
@@ -221,4 +221,94 @@ const search = async (
   }
 };
 
-export { index, insert, getById, getByCategory, update, destroy, search };
+const addToWishlist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id: prodId } = req.params;
+    const { _id: userId } = req.user as IUser;
+
+    const product = await Product.findById(prodId);
+
+    if (!product) {
+      const error: IError = new Error('ไม่พบสินค้า');
+      error.statusCode = StatusCode.NOT_FOUND;
+      throw error;
+    }
+
+    const user = await User.updateOne(
+      { _id: userId },
+      {
+        $addToSet: {
+          wishlist: prodId,
+        },
+      }
+    );
+
+    if (user.modifiedCount === 0) {
+      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ติดตามแล้ว');
+      error.statusCode = StatusCode.BAD_REQUEST;
+      throw error;
+    } else {
+      res.status(200).json({
+        message: `ติดตาม ${prodId} สำเร็จ`,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeFromWishlist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id: prodId } = req.params;
+    const { _id: userId } = req.user as IUser;
+
+    const product = await Product.findById(prodId);
+
+    if (!product) {
+      const error: IError = new Error('ไม่พบสินค้า');
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const user = await User.updateOne(
+      { _id: userId },
+      {
+        $pull: {
+          wishlist: prodId,
+        },
+      }
+    );
+
+    if (user.modifiedCount === 0) {
+      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่ได้ติดตาม');
+      error.statusCode = 400;
+      throw error;
+    } else {
+      res.status(200).json({
+        message: `เลิกติดตาม ${prodId} สำเร็จ`,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  index,
+  insert,
+  getById,
+  getByCategory,
+  update,
+  destroy,
+  search,
+  addToWishlist,
+  removeFromWishlist,
+};

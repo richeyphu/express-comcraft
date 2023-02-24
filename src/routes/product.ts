@@ -18,6 +18,7 @@ productRouter.post(
   validateSchema.productInsert,
   productController.insert
 );
+productRouter.post('/i/:id/wish', isLogin, productController.addToWishlist);
 
 productRouter.put(
   '/q/:id',
@@ -28,5 +29,10 @@ productRouter.put(
 );
 
 productRouter.delete('/q/:id', productController.destroy);
+productRouter.delete(
+  '/i/:id/unwish',
+  isLogin,
+  productController.removeFromWishlist
+);
 
 export default productRouter;
