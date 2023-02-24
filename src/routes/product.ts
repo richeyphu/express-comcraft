@@ -1,5 +1,4 @@
 import express, { Router } from 'express';
-import { checkSchema } from 'express-validator';
 
 import { productController } from '@controllers';
 import { validateSchema, isLogin, isAdmin } from '@middleware';
@@ -8,8 +7,8 @@ const productRouter: Router = express.Router();
 
 /* GET products listing. */
 productRouter.get('/', productController.index);
-productRouter.get('/q/:id', productController.showById);
-productRouter.get('/:cat', productController.showByCategory);
+productRouter.get('/q/:id', productController.getById);
+productRouter.get('/:cat', productController.getByCategory);
 
 productRouter.post(
   '/',

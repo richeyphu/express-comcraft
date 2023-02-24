@@ -59,7 +59,7 @@ const insert = async (
   }
 };
 
-const showById = async (
+const getById = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -89,7 +89,7 @@ const showById = async (
   }
 };
 
-const showByCategory = async (
+const getByCategory = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -184,4 +184,4 @@ const destroy = async (
   }
 };
 
-export { index, insert, showById, showByCategory, update, destroy };
+export { index, insert, getById, getByCategory, update, destroy };
