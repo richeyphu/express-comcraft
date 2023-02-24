@@ -123,6 +123,12 @@ const update = async (
     const { name, price, description, category, brand, photo } =
       req.body as IProduct;
 
+    if (!isOid(id)) {
+      const error: IError = new Error('ID ไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      throw error;
+    }
+
     // Validation
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -166,12 +172,18 @@ const destroy = async (
   try {
     const { id } = req.params;
 
+    if (!isOid(id)) {
+      const error: IError = new Error('ID ไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      throw error;
+    }
+
     const product = await Product.deleteOne({
       _id: id,
     });
 
     if (product.deletedCount === 0) {
-      const error: IError = new Error('ไม่สามารถลบข้อมูลได้ / ไม่พบบริษัท');
+      const error: IError = new Error('ไม่สามารถลบข้อมูลได้ / ไม่พบสินค้า');
       error.statusCode = 400;
       throw error;
     } else {
