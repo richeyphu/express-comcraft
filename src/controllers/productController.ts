@@ -2,7 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
 import { env, StatusCode } from '@config';
-import { Product, IProduct, User, IUser } from '@models';
+import {
+  Product,
+  IProduct,
+  User,
+  IUser,
+  productCategory,
+  ProductCategory,
+} from '@models';
 import { IError } from '@middleware';
 import { isOid, saveImageToDisk } from '@utils';
 
@@ -95,15 +102,23 @@ const getByCategory = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const product: IProduct[] = await Product.find({
-      category: { $regex: new RegExp(req.params.cat, 'i') },
-    });
+    const cat = req.params.cat as ProductCategory;
 
-    if (product.length === 0) {
+    if (![...productCategory].includes(cat)) {
       const error: IError = new Error('ไม่พบข้อมูล');
       error.statusCode = StatusCode.NOT_FOUND;
       throw error;
     }
+
+    const product: IProduct[] = await Product.find({
+      category: { $regex: new RegExp(cat, 'i') },
+    });
+
+    // if (product.length === 0) {
+    //   const error: IError = new Error('ไม่พบข้อมูล');
+    //   error.statusCode = StatusCode.NOT_FOUND;
+    //   throw error;
+    // }
 
     res.status(StatusCode.OK).json({
       data: product,
