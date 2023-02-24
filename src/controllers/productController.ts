@@ -196,4 +196,29 @@ const destroy = async (
   }
 };
 
-export { index, insert, getById, getByCategory, update, destroy };
+const search = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { q } = req.params;
+
+    const products: IProduct[] = await Product.find({
+      $or: [
+        { name: { $regex: new RegExp(q, 'i') } },
+        { description: { $regex: new RegExp(q, 'i') } },
+        { brand: { $regex: new RegExp(q, 'i') } },
+        { category: { $regex: new RegExp(q, 'i') } },
+      ],
+    }).sort({ createdAt: -1 });
+
+    res.status(StatusCode.OK).json({
+      data: products,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { index, insert, getById, getByCategory, update, destroy, search };

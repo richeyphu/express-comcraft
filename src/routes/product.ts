@@ -7,8 +7,9 @@ const productRouter: Router = express.Router();
 
 /* GET products listing. */
 productRouter.get('/', productController.index);
-productRouter.get('/q/:id', productController.getById);
 productRouter.get('/:cat', productController.getByCategory);
+productRouter.get('/i/:id', productController.getById);
+productRouter.get('/q/:q', productController.search);
 
 productRouter.post(
   '/',
