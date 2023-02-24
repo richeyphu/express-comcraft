@@ -22,6 +22,6 @@ COPY /public/images/nopic.png /public/images/cover.png /app/public/images/
 EXPOSE 3000
 
 # Start the server
-CMD [ "pnpm", "start" ]
+CMD [ "pnpm", "start:ts" ]
 
 ## Build image for DEVELOPMENT, END before here ### 

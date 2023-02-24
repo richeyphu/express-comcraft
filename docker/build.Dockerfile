@@ -18,6 +18,6 @@ COPY /public/images/nopic.png /public/images/cover.png /app/public/images/
 EXPOSE 3000
 
 # Start the server
-CMD [ "npm", "run", "start:build" ]
+CMD [ "npm", "run", "start" ]
 
 ### Build image for PRODUCTION, END before here ###
