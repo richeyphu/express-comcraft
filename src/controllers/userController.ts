@@ -3,7 +3,7 @@ import { validationResult, Result, ValidationError } from 'express-validator';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { env, StatusCode } from '@config';
-import { User, IUser } from '@models';
+import { User, IUser, Address, IAddress } from '@models';
 import { IError } from '@middleware';
 
 const index = (req: Request, res: Response, next: NextFunction): void => {
@@ -87,7 +87,7 @@ const login = async (
     // token
     const token: string = jwt.sign(
       {
-        id: user._id as string,
+        id: user._id,
         role: user.role,
       },
       env.JWT_SECRET,
@@ -108,4 +108,54 @@ const login = async (
   }
 };
 
-export { index, register, login };
+const getAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const address: IAddress[] = await Address.find().populate('user');
+
+    res.status(StatusCode.OK).json({
+      data: address,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const insertAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { name, tel, address: addr } = req.body as IAddress;
+    const { _id: userId } = req.user as IUser;
+
+    // Validation
+    const errors: Result<ValidationError> = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      error.validation = errors.array();
+      throw error;
+    }
+
+    const address = new Address({
+      name,
+      tel,
+      address: addr,
+      user: userId,
+    });
+    await address.save();
+
+    res.status(StatusCode.CREATED).json({
+      message: 'เพิ่มข้อมูลเรียบร้อยแล้ว',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { index, register, login, getAddress, insertAddress };

@@ -5,7 +5,7 @@ export interface IAddress extends Document {
   tel: string;
   address: {
     line1: string;
-    line2: string;
+    line2?: string;
     city: string;
     province: string;
     zip: string;
@@ -34,6 +34,7 @@ const schema = new Schema<IAddress>(
       line2: {
         type: String,
         trim: true,
+        default: '',
       },
       city: {
         type: String,

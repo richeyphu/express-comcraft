@@ -50,10 +50,44 @@ const userRegisterSchema: Schema = {
   },
 };
 
+const userAddressSchema: Schema = {
+  name: {
+    notEmpty: {
+      errorMessage: 'กรุณาป้อนชื่อ-สกุลด้วย',
+    },
+  },
+  tel: {
+    notEmpty: {
+      errorMessage: 'กรุณาเบอร์โทรศัพท์ด้วย',
+    },
+  },
+  'address.line1': {
+    notEmpty: {
+      errorMessage: 'กรุณาป้อนที่อยู่ด้วย',
+    },
+  },
+  'address.city': {
+    notEmpty: {
+      errorMessage: 'กรุณาป้อนที่อยู่ด้วย',
+    },
+  },
+  'address.province': {
+    notEmpty: {
+      errorMessage: 'กรุณาป้อนที่อยู่ด้วย',
+    },
+  },
+  'address.zip': {
+    notEmpty: {
+      errorMessage: 'กรุณาป้อนที่อยู่ด้วย',
+    },
+  },
+};
+
 const userLogin = checkSchema(userLoginSchema);
 const userRegister = checkSchema(userRegisterSchema);
+const userAddress = checkSchema(userAddressSchema);
 
-export { userLogin, userRegister };
+export { userLogin, userRegister, userAddress };
 
 /*** Product Schema ***/
 
