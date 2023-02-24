@@ -5,6 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { env, StatusCode } from '@config';
 import { User, IUser, Address, IAddress } from '@models';
 import { IError } from '@middleware';
+import { isOid } from '@utils';
 
 const index = (req: Request, res: Response, next: NextFunction): void => {
   const { role, name, email } = req.user as IUser;
@@ -173,6 +174,12 @@ const updateAddress = async (
     const { name, tel, address: addr } = req.body as IAddress;
     const { _id: userId, role } = req.user as IUser;
 
+    if (!isOid(id)) {
+      const error: IError = new Error('ID ไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      throw error;
+    }
+
     // Validation
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
@@ -208,4 +215,46 @@ const updateAddress = async (
   }
 };
 
-export { index, register, login, address, insertAddress, updateAddress };
+const destroyAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { _id: userId, role } = req.user as IUser;
+
+    if (!isOid(id)) {
+      const error: IError = new Error('ID ไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      throw error;
+    }
+
+    const address = await Address.deleteOne({
+      _id: id,
+      ...(role !== 'admin' && { user: userId }),
+    });
+
+    if (address.deletedCount === 0) {
+      const error: IError = new Error('ไม่สามารถลบข้อมูลได้ / ไม่พบที่อยู่');
+      error.statusCode = 400;
+      throw error;
+    } else {
+      res.status(200).json({
+        message: 'ลบข้อมูลเรียบร้อยแล้ว',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  index,
+  register,
+  login,
+  address,
+  insertAddress,
+  updateAddress,
+  destroyAddress,
+};

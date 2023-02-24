@@ -24,4 +24,6 @@ userRouter.post(
 
 userRouter.put('/address/:id', isLogin, userController.updateAddress);
 
+userRouter.delete('/address/:id', isLogin, userController.destroyAddress);
+
 export default userRouter;
