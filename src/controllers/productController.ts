@@ -144,7 +144,7 @@ const update = async (
       }
     );
 
-    if (product.nModified === 0) {
+    if (product.modifiedCount === 0) {
       const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบสินค้า');
       error.statusCode = 400;
       throw error;
