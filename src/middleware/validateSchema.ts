@@ -1,6 +1,6 @@
 import { checkSchema, Schema } from 'express-validator';
 
-import { userRole, productCategory } from '@models';
+import { productCategory } from '@models';
 import { BASE64_IMAGE_REGEX } from '@utils';
 
 /*** Login Schema ***/
@@ -19,8 +19,8 @@ const userLoginSchema: Schema = {
       errorMessage: 'กรุณาป้อนรหัสผ่านด้วย',
     },
     isLength: {
-      errorMessage: 'รหัสผ่านต้องมีอย่างน้อย 5 ตัวอักษร',
-      options: { min: 5 },
+      errorMessage: 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
+      options: { min: 8 },
     },
   },
 };
@@ -46,12 +46,6 @@ const userRegisterSchema: Schema = {
     isLength: {
       errorMessage: 'รหัสผ่านต้องมีอย่างน้อย 5 ตัวอักษร',
       options: { min: 5 },
-    },
-  },
-  role: {
-    isIn: {
-      errorMessage: 'ประเภทผู้ใช้ไม่ถูกต้อง',
-      options: [[...userRole], null],
     },
   },
 };
