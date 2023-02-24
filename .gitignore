@@ -67,5 +67,6 @@ typings/
 build
 
 # Project generated files
-public/images/products
-public/images/shops
+public/images/*
+!public/images/nopic.png
+!public/images/cover.png
