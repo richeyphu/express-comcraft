@@ -3,7 +3,7 @@ import { validationResult, Result, ValidationError } from 'express-validator';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 import { env, StatusCode } from '@config';
-import { User, IUser, Address, IAddress } from '@models';
+import { User, IUser, Address, IAddress, IProduct } from '@models';
 import { IError } from '@middleware';
 import { isOid } from '@utils';
 
@@ -240,10 +240,36 @@ const destroyAddress = async (
       error.statusCode = 400;
       throw error;
     } else {
-      res.status(200).json({
+      res.status(StatusCode.OK).json({
         message: 'ลบข้อมูลเรียบร้อยแล้ว',
       });
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const wishlist = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { _id: userId } = req.user as IUser;
+
+    const user = await User.findOne({ _id: userId })
+      .select('wishlist -_id')
+      .populate('wishlist')
+      .sort('wishlist');
+
+    let wishlist = user?.wishlist as IProduct[] | undefined;
+    wishlist = wishlist?.map((product) => {
+      product.photo = `${env.DOMAIN}/images/${product.photo}`;
+      return product;
+    });
+    res.status(StatusCode.OK).json({
+      data: wishlist,
+    });
   } catch (error) {
     next(error);
   }
@@ -257,4 +283,5 @@ export {
   insertAddress,
   updateAddress,
   destroyAddress,
+  wishlist,
 };

@@ -8,6 +8,7 @@ const userRouter: Router = express.Router();
 /* GET user listing. */
 userRouter.get('/', isLogin, userController.index);
 userRouter.get('/address', isLogin, userController.address);
+userRouter.get('/wishlist', isLogin, userController.wishlist);
 
 userRouter.post(
   '/register',
