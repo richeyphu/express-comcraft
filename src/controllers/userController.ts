@@ -114,7 +114,12 @@ const address = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const address: IAddress[] = await Address.find().populate('user');
+    const { _id: userId, role } = req.user as IUser;
+
+    const address: IAddress[] =
+      role === 'admin'
+        ? await Address.find().populate('user')
+        : await Address.find({ user: userId });
 
     res.status(StatusCode.OK).json({
       data: address,
