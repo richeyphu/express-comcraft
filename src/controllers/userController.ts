@@ -257,7 +257,7 @@ const wishlist = async (
   try {
     const { _id: userId } = req.user as IUser;
 
-    const user = await User.findOne({ _id: userId })
+    const user = await User.findById(userId)
       .select('wishlist -_id')
       .populate('wishlist')
       .sort('wishlist');
@@ -267,6 +267,7 @@ const wishlist = async (
       product.photo = `${env.DOMAIN}/images/${product.photo}`;
       return product;
     });
+    
     res.status(StatusCode.OK).json({
       data: wishlist,
     });
