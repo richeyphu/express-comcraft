@@ -5,8 +5,9 @@ import { validateSchema, isLogin } from '@middleware';
 
 const userRouter: Router = express.Router();
 
-/* GET users listing. */
+/* GET user listing. */
 userRouter.get('/', isLogin, userController.index);
+userRouter.get('/address', isLogin, userController.index);
 
 userRouter.post(
   '/register',

@@ -1,2 +1,2 @@
-export * from './validateOid';
+export * from './validatePattern';
 export * from './saveImageToDisk';

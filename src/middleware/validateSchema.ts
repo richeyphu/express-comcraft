@@ -1,6 +1,7 @@
 import { checkSchema, Schema } from 'express-validator';
 
 import { userRole, productCategory } from '@models';
+import { BASE64_IMAGE_REGEX } from '@utils';
 
 /*** Login Schema ***/
 
@@ -78,13 +79,16 @@ const productInsertSchema: Schema = {
   },
   category: {
     isIn: {
-      errorMessage: 'ประเภทสินค้าไม่ถูกต้อง',
-      options: [[...productCategory], null],
+      errorMessage: `ประเภทสินค้าไม่ถูกต้อง : ['${[...productCategory].join(
+        "', '"
+      )}']`,
+      options: [[...productCategory, null]],
     },
   },
   photo: {
-    isBase64: {
-      errorMessage: 'รูปภาพไม่ถูกต้อง',
+    matches: {
+      errorMessage: 'รูปแบบรูปภาพไม่ถูกต้อง',
+      options: [BASE64_IMAGE_REGEX],
     },
   },
 };
@@ -100,12 +104,13 @@ const productUpdateSchema: Schema = {
       errorMessage: `ประเภทสินค้าไม่ถูกต้อง : ['${[...productCategory].join(
         "', '"
       )}']`,
-      options: [[...productCategory], null],
+      options: [[...productCategory, null]],
     },
   },
   photo: {
-    isBase64: {
-      errorMessage: 'รูปภาพไม่ถูกต้อง',
+    matches: {
+      errorMessage: 'รูปแบบรูปภาพไม่ถูกต้อง',
+      options: [BASE64_IMAGE_REGEX],
     },
   },
 };

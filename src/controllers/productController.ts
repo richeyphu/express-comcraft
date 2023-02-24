@@ -4,7 +4,7 @@ import { validationResult } from 'express-validator';
 import { env, StatusCode } from '@config';
 import { Product, IProduct } from '@models';
 import { IError } from '@middleware';
-import { isCorrectOid, saveImageToDisk } from '@utils';
+import { isOid, saveImageToDisk } from '@utils';
 
 const index = async (
   req: Request,
@@ -67,7 +67,7 @@ const getById = async (
   try {
     const oid = req.params.id;
 
-    if (!isCorrectOid(oid)) {
+    if (!isOid(oid)) {
       const error: IError = new Error('ไม่พบข้อมูล');
       error.statusCode = StatusCode.NOT_FOUND;
       throw error;

@@ -3,6 +3,7 @@ import path from 'path';
 import { v4 } from 'uuid';
 
 import { env } from '@config';
+import { BASE64_IMAGE_REGEX } from '@utils';
 
 export type Image = {
   type: string;
@@ -44,9 +45,7 @@ export const saveImageToDisk = (baseImage: string): string => {
 };
 
 export const decodeBase64Image = (base64Str: string): Image => {
-  const matches: RegExpMatchArray | null = base64Str.match(
-    /^data:([A-Za-z-+/]+);base64,(.+)$/
-  );
+  const matches: RegExpMatchArray | null = base64Str.match(BASE64_IMAGE_REGEX);
 
   if (!matches || matches.length !== 3) {
     throw new Error('Invalid base64 string');
