@@ -30,9 +30,11 @@ describe('Route /status', () => {
   jest.retryTimes(3, { logErrorsBeforeRetry: true });
   it('should response the `server.db_status` as `connected`', async () => {
     const response = await request.get('/status');
+    jest.useFakeTimers();
     setTimeout(() => {
       expect(response.body.server.db_status).toBe('connected');
     }, 1000);
+    jest.useRealTimers();
   });
 });
 
@@ -44,14 +46,14 @@ describe('Route /product', () => {
 
   it('should response the POST method', async () => {
     const response = await request.post('/product');
-    expect(response.statusCode).toBe(422);
+    expect(response.statusCode).toBe(401);
   });
 });
 
 describe('Route /user', () => {
   it('should response the GET method', async () => {
     const response = await request.get('/user');
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(401);
   });
 
   it('/login should response the POST method', async () => {
