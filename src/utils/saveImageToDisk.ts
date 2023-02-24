@@ -12,7 +12,7 @@ export type Image = {
 
 export const saveImageToDisk = (baseImage: string): string => {
   // If host is readonly, return empty string
-  if (env.READONLY) return '';
+  if (env.READONLY) return 'nopic.png';
 
   // Resolve absolute project path
   const projectPath: string = path.resolve('./');
