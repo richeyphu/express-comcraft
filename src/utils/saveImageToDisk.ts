@@ -2,12 +2,17 @@ import { writeFileSync } from 'fs';
 import path from 'path';
 import { v4 } from 'uuid';
 
+import { env } from '@config';
+
 export type Image = {
   type: string;
   data: string;
 };
 
 export const saveImageToDisk = (baseImage: string): string => {
+  // If host is readonly, return empty string
+  if (env.READONLY) return '';
+
   // Resolve absolute project path
   const projectPath: string = path.resolve('./');
 

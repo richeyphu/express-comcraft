@@ -15,4 +15,5 @@ export default {
       ? process.env.MONGODB_URI_TEST ?? null
       : process.env.MONGODB_URI ?? null;
   },
+  READONLY: process.env.READONLY === 'true' ? true : false,
 } as const;
