@@ -11,7 +11,7 @@ import productRouter from '@routes/product';
 import adminRouter from '@routes/admin';
 
 import { env } from '@config';
-import { errorHandler, serverStatus } from '@middleware';
+import { errorHandler, serverStatus, isLogin, isAdmin } from '@middleware';
 
 const app: Express = express();
 
@@ -27,13 +27,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(passport.initialize());
-app.use('/status', serverStatus(app));
+app.use('/status', isLogin, isAdmin, serverStatus(app));
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/product', productRouter);
-app.use('/admin', adminRouter);     // :trollface:
-app.use('/wp-admin', adminRouter);  // another :trollface:
+app.use('/admin', adminRouter); // :trollface:
+app.use('/wp-admin', adminRouter); // another :trollface:
 
 app.use(errorHandler);
 
