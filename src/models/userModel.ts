@@ -11,6 +11,7 @@ export interface IUser extends Document {
   role?: UserRole;
   encryptPassword: (password: string) => string;
   checkPassword: (password: string) => boolean;
+  _id: Schema.Types.ObjectId;
 }
 
 const schema = new Schema<IUser>(
