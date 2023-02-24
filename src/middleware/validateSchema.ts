@@ -122,6 +122,7 @@ const productInsertSchema: Schema = {
       errorMessage: 'รูปแบบรูปภาพไม่ถูกต้อง',
       options: [BASE64_IMAGE_REGEX],
     },
+    optional: true,
   },
 };
 
@@ -144,6 +145,7 @@ const productUpdateSchema: Schema = {
       errorMessage: 'รูปแบบรูปภาพไม่ถูกต้อง',
       options: [BASE64_IMAGE_REGEX],
     },
+    optional: true,
   },
 };
 
