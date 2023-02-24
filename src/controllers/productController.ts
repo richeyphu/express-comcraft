@@ -146,10 +146,10 @@ const update = async (
 
     if (product.modifiedCount === 0) {
       const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบสินค้า');
-      error.statusCode = 400;
+      error.statusCode = StatusCode.BAD_REQUEST;
       throw error;
     } else {
-      res.status(200).json({
+      res.status(StatusCode.OK).json({
         message: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
       });
     }
