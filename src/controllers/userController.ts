@@ -108,7 +108,7 @@ const login = async (
   }
 };
 
-const getAddress = async (
+const address = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -158,4 +158,49 @@ const insertAddress = async (
   }
 };
 
-export { index, register, login, getAddress, insertAddress };
+const updateAddress = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { name, tel, address: addr } = req.body as IAddress;
+    const { _id: userId, role } = req.user as IUser;
+
+    // Validation
+    const errors: Result<ValidationError> = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error: IError = new Error('ข้อมูลที่ได้รับมาไม่ถูกต้อง');
+      error.statusCode = StatusCode.UNPROCESSABLE_ENTITY;
+      error.validation = errors.array();
+      throw error;
+    }
+
+    const address = await Address.updateOne(
+      {
+        _id: id,
+        ...(role !== 'admin' && { user: userId }),
+      },
+      {
+        ...(name && { name }),
+        ...(tel && { tel }),
+        ...(addr && { address: addr }),
+      }
+    );
+
+    if (address.modifiedCount === 0) {
+      const error: IError = new Error('ไม่สามารถแก้ไขข้อมูลได้ / ไม่พบที่อยู่');
+      error.statusCode = StatusCode.BAD_REQUEST;
+      throw error;
+    } else {
+      res.status(StatusCode.OK).json({
+        message: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { index, register, login, address, insertAddress, updateAddress };

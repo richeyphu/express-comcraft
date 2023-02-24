@@ -7,7 +7,7 @@ const userRouter: Router = express.Router();
 
 /* GET user listing. */
 userRouter.get('/', isLogin, userController.index);
-userRouter.get('/address', isLogin, userController.getAddress);
+userRouter.get('/address', isLogin, userController.address);
 
 userRouter.post(
   '/register',
@@ -21,5 +21,7 @@ userRouter.post(
   validateSchema.userAddress,
   userController.insertAddress
 );
+
+userRouter.put('/address/:id', isLogin, userController.updateAddress);
 
 export default userRouter;
