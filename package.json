@@ -1,6 +1,6 @@
 {
   "name": "express-comcraft",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "RESTful API for computer store",
   "author": "phuritd",
   "license": "MIT",
