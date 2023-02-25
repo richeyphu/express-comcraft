@@ -21,14 +21,14 @@ productRouter.post(
 productRouter.post('/i/:id/wish', isLogin, productController.addToWishlist);
 
 productRouter.put(
-  '/q/:id',
+  '/i/:id',
   isLogin,
   isAdmin,
   validateSchema.productUpdate,
   productController.update
 );
 
-productRouter.delete('/q/:id', productController.destroy);
+productRouter.delete('/i/:id', productController.destroy);
 productRouter.delete(
   '/i/:id/unwish',
   isLogin,
