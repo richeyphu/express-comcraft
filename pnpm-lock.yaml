@@ -25,6 +25,7 @@ specifiers:
   eslint: ^8.34.0
   eslint-plugin-node: ^11.1.0
   express: ~4.18.2
+  express-now: ^0.1.1
   express-validator: ^6.15.0
   jest: ^29.4.3
   jsonwebtoken: ^9.0.0
@@ -47,6 +48,7 @@ dependencies:
   debug: 4.3.4
   dotenv: 16.0.3
   express: 4.18.2
+  express-now: 0.1.1
   express-validator: 6.15.0
   jsonwebtoken: 9.0.0
   mongoose: 6.10.0
@@ -3042,6 +3044,10 @@ packages:
       jest-message-util: 29.4.3
       jest-util: 29.4.3
     dev: true
+
+  /express-now/0.1.1:
+    resolution: {integrity: sha512-NvErs5BVoz2C/gFqS9C4G6T4QELt7fwKMnYzBuG5lBfH+UHIzVKPNoh2QUiMacXLzkjhaQ7oNHQNQnZvXDxbvg==}
+    dev: false
 
   /express-validator/6.15.0:
     resolution: {integrity: sha512-r05VYoBL3i2pswuehoFSy+uM8NBuVaY7avp5qrYjQBDzagx2Z5A77FZqPT8/gNLF3HopWkIzaTFaC4JysWXLqg==}
