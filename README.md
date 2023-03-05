@@ -44,11 +44,15 @@ $ pnpm dev
 $ pnpm start
 ```
 
-- Test, bundle & build Docker image
+- Test, bundle, and build a Docker Image, respectively
 
 ```sh
 $ pnpm build:docker
 ```
+
+## Documentation
+
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white)](https://documenter.getpostman.com/view/8888210/2s93CPprQ5)
 
 ## License
 
